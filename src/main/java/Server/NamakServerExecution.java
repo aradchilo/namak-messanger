@@ -1,4 +1,4 @@
-package server;
+package Server;
 
 public class NamakServerExecution {
     public static void main(String[] args) {
