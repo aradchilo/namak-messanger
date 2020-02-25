@@ -22,7 +22,7 @@ public class NamakClientHandler implements Runnable {
             this.namakServerSide = server;
             this.clientSocket = socket;
             this.outMessage = new PrintWriter(socket.getOutputStream());
-            this.inMessage = new PrintWriter(socket.getInputStream());
+            this.inMessage = new Scanner(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,9 +40,35 @@ public class NamakClientHandler implements Runnable {
                 //when a client sends a message
                 if (inMessage.hasNext()) {
                     String namakClientMessage = inMessage.nextLine();
-
+                    if (namakClientMessage.equalsIgnoreCase("##session##end##")) {
+                        break;
+                    }
+                    System.out.println(namakClientMessage); //test message output to console
+                    namakServerSide.sendMessagetoAllClients(namakClientMessage);
+                    Thread.sleep(100); //stream stop
                 }
             }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
+        finally {
+            this.namakClose();
+        }
+    }
+    //senging a message
+    public void sendMsgtoClients(String msg){
+        try{
+            outMessage.println(msg);
+            outMessage.flush();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    //Client leaves the chat
+    public void namakClose() {
+       //deleting client from the list
+       namakServerSide.removeNamakClient(this);
+       namakClientCount--;
+       namakServerSide.sendMessagetoAllClients("User amount: " + namakClientCount);
     }
 }

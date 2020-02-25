@@ -25,6 +25,16 @@ public class NamakServerSide {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        finally {
+            try{
+                //connection closing
+                clientSocket.close();
+                System.out.println("The server is stopped");
+                serverSocket.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     // sending a message to all connected clients
     public void sendMessagetoAllClients(String namakMsg) {
