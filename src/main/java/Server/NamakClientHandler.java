@@ -66,9 +66,9 @@ public class NamakClientHandler implements Runnable {
     }
     //Client leaves the chat
     public void namakClose() {
-       //deleting client from the list
-       namakServerSide.removeNamakClient(this);
-       namakClientCount--;
-       namakServerSide.sendMessagetoAllClients("User amount: " + namakClientCount);
+        //deleting client from the list
+        namakServerSide.removeNamakClient(this);
+        namakClientCount--;
+        namakServerSide.sendMessagetoAllClients("User amount: " + namakClientCount);
     }
 }
